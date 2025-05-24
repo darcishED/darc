@@ -46,7 +46,7 @@ class DarC {
         await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
         _supabaseClientInstance = supabase;
       } on AssertionError catch (e) {
-        debugPrint(e.message);
+        debugPrint('$e');
       }
     }
 
