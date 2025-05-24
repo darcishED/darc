@@ -18,13 +18,16 @@ class DarC {
   static DarC? _instance;
   static Supabase? _supabaseInstance;
 
+  /// Check if DarC was initialized
+  bool _initialized = false;
+
   /// Get the current DarC instance
   ///
   /// An [AssertionError] is thrown if DarC wasn't initialized yet.
   /// Call [DarC.initialize] to initialize it.
   static DarC get instance {
     assert(
-    _instance._initialized,
+    _instance?._initialized == true,
     'DarC must be initialized before calling DarC.instance',
     );
     return _instance;
@@ -40,9 +43,6 @@ class DarC {
   /// The Google Sign In instance
   static GoogleSignIn? _googleSignIn;
 
-  /// Check if DarC was initialized
-  bool _initialized = false;
-
   /// Initialize DarC with Firebase and Supabase configurations
   static Future<void> initialize({
     required String supabaseUrl,
@@ -51,14 +51,15 @@ class DarC {
     String? webClientId,
     String scopes = 'email,profile',
   }) async {
+    assert(
+    _instance?._initialized == true,
+    'DarC instance is already initialized',
+    );
+
+    // avoid crashes
     if (_instance != null) {
       return;
     }
-
-    assert(
-    !_instance._initialized,
-    'DarC instance is already initialized',
-    );
 
     // Initialize Supabase - only once
     try {
