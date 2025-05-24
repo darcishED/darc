@@ -51,14 +51,14 @@ class DarC {
     String? webClientId,
     String scopes = 'email,profile',
   }) async {
+    if (_instance != null) {
+      return;
+    }
+
     assert(
     !_instance._initialized,
     'DarC instance is already initialized',
     );
-
-    if (_instance != null) {
-      return;
-    }
 
     // Initialize Supabase - only once
     try {
