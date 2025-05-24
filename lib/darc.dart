@@ -16,22 +16,7 @@ class DarC {
   DarC._();
 
   static DarC? _instance;
-  static Supabase? _supabaseInstance;
-
-  /// Check if DarC was initialized
-  bool _initialized = false;
-
-  /// Get the current DarC instance
-  ///
-  /// An [AssertionError] is thrown if DarC wasn't initialized yet.
-  /// Call [DarC.initialize] to initialize it.
-  static DarC get instance {
-    assert(
-    _instance?._initialized == true,
-    'DarC must be initialized before calling DarC.instance',
-    );
-    return _instance;
-  }
+  static SupabaseClient? _supabaseClientInstance;
 
   /// The Supabase client instance
   static SupabaseClient get supabase => Supabase.instance.client;
@@ -51,22 +36,18 @@ class DarC {
     String? webClientId,
     String scopes = 'email,profile',
   }) async {
-    assert(
-    _instance?._initialized == true,
-    'DarC instance is already initialized',
-    );
-
-    // avoid crashes
     if (_instance != null) {
       return;
     }
 
     // Initialize Supabase - only once
-    try {
-      _supabaseInstance = supabase;
-    } on AssertionError catch (e) {
-      await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
-      _supabaseInstance = supabase;
+    if (_supabaseClientInstance == null) {
+      try {
+        await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
+        _supabaseClientInstance = supabase;
+      } on AssertionError catch (e) {
+        debugPrint(e.message);
+      }
     }
 
     // Initialize Firebase
@@ -81,7 +62,6 @@ class DarC {
     }
 
     _instance = DarC._();
-    _initialized = _instance != null;
   }
 
   /// Wrap the app with ProviderScope for Riverpod
