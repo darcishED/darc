@@ -41,6 +41,7 @@ class DarC {
     }
 
     // Initialize Supabase - only once
+<<<<<<< HEAD
     if (_supabaseClientInstance == null) {
       try {
         await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
@@ -48,6 +49,13 @@ class DarC {
       } on AssertionError catch (e) {
         debugPrint(e.message);
       }
+=======
+    try {
+      _supabaseClientInstance = supabase;
+    } on AssertionError catch (e) {
+      await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
+      _supabaseClientInstance = supabase;
+>>>>>>> 4bde1f72bba683272c9ef5bd3087bb3ce06143fa
     }
 
     // Initialize Firebase
