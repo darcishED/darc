@@ -1,10 +1,7 @@
 name: darc
 description: "Dual Authentication and Riverpod Container - seamlessly manage Firebase and Supabase authentication with Riverpod integration"
-<<<<<<< HEAD
+
 version: 0.0.4
-=======
-version: 0.0.3
->>>>>>> 4bde1f72bba683272c9ef5bd3087bb3ce06143fa
 homepage: ''
 
 environment:
